@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  users_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.users
+    ports:
+      - "5001:5001"
+    container_name: users_service
+    networks:
+      - microservices_network
+
+  orders_service:
+    build:
+      context: .
+      dockerfile: Dockerfile.orders
+    ports:
+      - "5002:5002"
+    container_name: orders_service
+    depends_on:
+      - users_service
+    networks:
+      - microservices_network
+
+networks:
+  microservices_network:
+    driver: bridge

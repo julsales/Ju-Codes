@@ -1,0 +1,2 @@
+# Requisitos Python para ferramentas JWT
+PyJWT==2.8.0

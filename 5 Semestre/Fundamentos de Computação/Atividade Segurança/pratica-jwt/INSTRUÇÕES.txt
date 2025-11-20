@@ -1,0 +1,42 @@
+========================================
+PRÁTICA JWT - INSTRUÇÕES DE EXECUÇÃO
+========================================
+
+1. INSTALAR DEPENDÊNCIAS
+-------------------------
+Terminal 1: cd service-b && npm install
+Terminal 2: cd gateway && npm install
+Terminal 3: cd service-a && npm install
+Terminal 4: cd tools && npm install
+
+2. INICIAR SERVIÇOS (nesta ordem)
+----------------------------------
+Terminal 1: cd service-b && npm start    (porta 4000)
+Terminal 2: cd gateway && npm start      (porta 8000)
+Terminal 3: cd service-a && npm start    (porta 3000)
+
+3. GERAR TOKEN JWT
+------------------
+cd tools
+node generate-token.js
+
+Copie o token gerado.
+
+4. TESTES COM POWERSHELL
+-------------------------
+
+# Sem token (deve retornar 401)
+Invoke-RestMethod -Uri http://localhost:8000/minha-rota
+
+# Com token válido (deve retornar 200)
+$token = "COLE_SEU_TOKEN_AQUI"
+$headers = @{ "Authorization" = "Bearer $token" }
+Invoke-RestMethod -Uri http://localhost:8000/minha-rota -Headers $headers
+
+# Testes automáticos via service-a
+Invoke-RestMethod -Uri http://localhost:3000/call-gateway-with-token
+Invoke-RestMethod -Uri http://localhost:3000/call-gateway-no-token
+
+========================================
+CHAVE SECRETA: MINHA_CHAVE_DE_ASSINATURA
+========================================

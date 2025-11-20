@@ -1,0 +1,16 @@
+{
+  "name": "jwt-token-tools",
+  "version": "1.0.0",
+  "description": "Ferramentas para gerar e validar tokens JWT",
+  "main": "generate-token.js",
+  "scripts": {
+    "generate": "node generate-token.js",
+    "generate:long": "node generate-token.js 300s"
+  },
+  "keywords": ["jwt", "token"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  }
+}
