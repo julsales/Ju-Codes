@@ -1,8 +1,3 @@
-#RADIX-SORT(A, n, d)
-# 1. Para i = 1 a d:
-# a. Use um algoritmo de ordenação estável para ordenar o arranjo A segundo o
-# dígito i (usando COUNTING-SORT(A, n, 9), aplicado ao dígito i de cada chave).
-# 2. Devolva A.
 
 def counting_sort(A,n,k):
     # K é o maior valor do array, n é o tamanho do array, A é o array 
@@ -26,24 +21,11 @@ def counting_sort(A,n,k):
     return B    
 
 
-def radix_sort(A,n,d):
-    
-    for i in range(d):
-        counting_sort(A,n,i)
-        
-    return A
-
-
-
 
 def main():
     A = [1, 5, 6, 8, 8, 5, 82]
     
-    lista_digitos = [len(str(abs(num))) for num in A]
-        
-    for i in range(len(lista_digitos)):
-        print(radix_sort(A, len(A), lista_digitos[i]))
-    return
+    counting_sort(A,len(A),max(A))
 
 
 
